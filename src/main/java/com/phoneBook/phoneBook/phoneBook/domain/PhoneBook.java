@@ -7,13 +7,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "phoneBook")
 @Getter
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class PhoneBook extends BaseTimeEntity {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "idx")
     private Long idx;
 
@@ -22,4 +24,9 @@ public class PhoneBook extends BaseTimeEntity {
 
     @Column(name = "phone")
     private String phone;
+
+    public PhoneBook(String name, String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
 }
