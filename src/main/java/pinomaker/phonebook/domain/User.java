@@ -1,4 +1,4 @@
-package pinomaker.phonebook;
+package pinomaker.phonebook.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
