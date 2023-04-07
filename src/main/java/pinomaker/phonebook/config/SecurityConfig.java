@@ -28,6 +28,10 @@ public class SecurityConfig {
     private final CorsFilter corsFilter;
     private final TokenProvider tokenProvider;
 
+    private final String[] AUTH_WHITELIST = {
+            "/v2/api-docs", "/swagger-resources", "/swagger-resources/**", "/configuration/ui", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger-ui/**",
+            "/**", "/api/user", "/api/user/login", "/api/**", "/swagger-ui/index.html"};
+
     @Bean
     public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
@@ -46,6 +50,8 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
+                .antMatchers("/swagger-ui.html", "/api/user/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
