@@ -24,17 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     private UserDetails createUserDetails(User user) {
-        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getAuthority().toString());
-        return new org.springframework.security.core.userdetails.User(String.valueOf(user.getIdx()), user.getPassword(), Collections.singleton(grantedAuthority));
-    }
-
-    private Collection<? extends GrantedAuthority> convertToSpringAuthorities(Optional<User> optUserAccount) {
-        Set<String> permissions = new HashSet<>();
-        User userAccount = new User();
-        if (optUserAccount.isPresent()) {
-            userAccount = optUserAccount.get();
-        }
-
-        return permissions.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        return org.springframework.security.core.userdetails.User
+                .builder()
+                .username(user.getId())
+                .password(user.getPassword())
+                .authorities(String.valueOf(user.getAuthority()))
+                .build();
     }
 }

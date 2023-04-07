@@ -15,6 +15,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import pinomaker.phonebook.jwt.JwtAuthenticationFilter;
+import pinomaker.phonebook.jwt.TokenProvider;
 
 import java.util.Arrays;
 
@@ -24,6 +26,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final CorsFilter corsFilter;
+    private final TokenProvider tokenProvider;
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -43,8 +46,9 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .antMatchers("*").permitAll()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }

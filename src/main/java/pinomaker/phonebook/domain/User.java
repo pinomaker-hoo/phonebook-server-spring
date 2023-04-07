@@ -21,7 +21,7 @@ public class User extends BaseTimeEntity {
     @Column(name = "user_idx")
     private Long idx;
 
-    @Column(name ="user_id")
+    @Column(name ="user_id", unique = true)
     private String id;
 
     @Column(name = "user_password")
